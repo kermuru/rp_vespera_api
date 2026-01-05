@@ -17,9 +17,21 @@ class IssuesService
     {
         return $this->repository->getAll();
     }
+    private function generateTicketNumber(): string
+    {
+        $today = Carbon::today();
+        $formattedDate = $today->format('dmY');
+
+        $count = $this->repository
+            ->countByDate($today->toDateString()) + 1;
+
+        return 'TCKTCUST-' . $formattedDate . '-' . str_pad($count, 4, '0', STR_PAD_LEFT);
+    }
 
     public function create(array $data)
     {
+
+        $ticketNo = $this->generateTicketNumber();
         $dto = new CreateIssuesDTO(
             issue_id: (string) Str::uuid(),
             concern_title: $data['concern_title'],
@@ -30,6 +42,9 @@ class IssuesService
             date_start: $data['date_start'] ?? null,
             date_hold: $data['date_hold'] ?? null,
             date_complete: $data['date_complete'] ?? null,
+            date_resume: $data['date_resume'] ?? null,
+            ticket_status: 'Open',
+            ticket_no: $ticketNo,
             created_by:1,
         );
 
