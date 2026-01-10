@@ -43,4 +43,4 @@ class MakeDomainModel extends Command
         $this->info("Model {$name} created at {$filePath}.");
     }
 }
-}
+
