@@ -3,6 +3,7 @@
 namespace App\Domain\AutomationDashboard\Services;
 
 use App\Domain\AutomationDashboard\DTO\CreateConversationRecordDTO;
+use App\Domain\AutomationDashboard\DTO\UpdateConversationDTO;
 use App\Domain\AutomationDashboard\DTO\UpdateStatusDTO;
 use App\Domain\AutomationDashboard\Models\ConversationModel;
 use App\Domain\AutomationDashboard\Repositories\ConversationRepository;
@@ -83,5 +84,19 @@ class ConversationServices
         );
 
         return $this->repository->updateTransBot($conversation, $dto);
+    }
+
+    public function updateConversation(array $data): ConversationModel {
+        $conversation = $this->repository->find_psid($data['customer_psid']);
+        if (!$conversation) {
+            throw new \Exception('Conversation not found.');
+        }
+
+        $dto = new UpdateConversationDTO(
+            customer_psid: $data['customer_psid'],
+            last_message: $data['last_message'],
+        );
+
+        return $this->repository->updateConversation($conversation, $dto);
     }
 }

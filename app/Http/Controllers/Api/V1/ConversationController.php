@@ -93,4 +93,19 @@ class ConversationController extends Controller
             'data'    => $conversation,
         ]);
     }
+    public function updateConversation(Request $request)
+    {
+        $validated = $request->validate([
+            'customer_psid'         => 'required|integer',
+            'last_message'          => 'required|string',
+        ]);
+
+        $conversation = $this->service->updateConversation($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Message Updated',
+            'data'    => $conversation,
+        ]);
+    }
 }

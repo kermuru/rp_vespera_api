@@ -3,6 +3,7 @@
 namespace App\Domain\AutomationDashboard\Repositories;
 
 use App\Domain\AutomationDashboard\DTO\CreateConversationRecordDTO;
+use App\Domain\AutomationDashboard\DTO\UpdateConversationDTO;
 use App\Domain\AutomationDashboard\DTO\UpdateStatusDTO;
 use App\Domain\AutomationDashboard\Models\ConversationModel;
 
@@ -81,6 +82,13 @@ class ConversationRepository
             'status'               => $updateDTO->status,
             'transfer_count_bot'   => $updateDTO->transfer_count_bot,
             'transfer_count_human' => $updateDTO->transfer_count_human,
+        ]);
+
+        return $conversation;
+    }
+    public function updateConversation(ConversationModel $conversation,UpdateConversationDTO $updateConversationDTO): ConversationModel {
+        $conversation->update([
+            'last_message'  => $updateConversationDTO->last_message,
         ]);
 
         return $conversation;
