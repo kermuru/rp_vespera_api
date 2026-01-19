@@ -9,6 +9,7 @@ use App\Domain\AutomationDashboard\DTO\UpdateRelationshipLeadsDTO;
 use App\Domain\AutomationDashboard\DTO\UpdateStatusDTO;
 use App\Domain\AutomationDashboard\DTO\UpdateStatusLogsDTO;
 use App\Domain\AutomationDashboard\Models\ConversationModel;
+use Illuminate\Support\Collection;
 
 class ConversationRepository
 {
@@ -118,5 +119,15 @@ class ConversationRepository
             'relationship_stage'  => $UpdateRelationshipLeadsDTO->relationship_stage,
         ]);
         return $conversation;
+    }
+
+
+
+    //sumary
+    public function countByLeadStage(): Collection
+    {
+        return ConversationModel::selectRaw('lead_stage, COUNT(*) as total')
+            ->groupBy('lead_stage')
+            ->pluck('total', 'lead_stage');
     }
 }

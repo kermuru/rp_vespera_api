@@ -3,6 +3,7 @@
 namespace App\Domain\AutomationDashboard\Services;
 
 use App\Domain\AutomationDashboard\DTO\CreateConversationRecordDTO;
+use App\Domain\AutomationDashboard\DTO\LeadsSummaryDTO;
 use App\Domain\AutomationDashboard\DTO\UpdateConversationDTO;
 use App\Domain\AutomationDashboard\DTO\UpdateLeadsConversationDTO;
 use App\Domain\AutomationDashboard\DTO\UpdateRelationshipLeadsDTO;
@@ -146,4 +147,28 @@ class ConversationServices
 
         return $this->repository->updateConversationRelationship($conversation, $dto);
     }
+
+    public function getSummary(): LeadsSummaryDTO
+    {
+        $counts = $this->repository->countByLeadStage();
+
+        $intake   = $counts['Intake'] ?? 0;
+        $closing  = $counts['Closing'] ?? 0;
+
+        $conversionRate = $intake > 0
+            ? round(($closing / $intake) * 100, 2)
+            : 0;
+
+        return new LeadsSummaryDTO(
+            Intake: $intake,
+            Qualified: $counts['Qualified'] ?? 0,
+            Schedule: $counts['Scheduled Visit'] ?? 0,
+            Closing: $closing,
+            Dormant: $counts['Dormant'] ?? 0,
+            Lost: $counts['Lost'] ?? 0,
+            Unqualified: $counts['Unqualified'] ?? 0,
+            Conversion_rate: $conversionRate,
+        );
+    }
+
 }

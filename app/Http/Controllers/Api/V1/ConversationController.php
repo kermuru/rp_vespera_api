@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Domain\AutomationDashboard\DTO\LeadsSummaryDTO;
 use App\Http\Controllers\Controller;
 use App\Domain\AutomationDashboard\Services\ConversationServices;
 use App\Helpers\ApiResponse;
@@ -156,5 +157,11 @@ class ConversationController extends Controller
             'message' => 'Message Updated',
             'data'    => $conversation,
         ]);
+    }
+
+    public function leadsSummary()
+    {
+        $conversation = $this->service->getSummary();
+        return response()->json($conversation);
     }
 }

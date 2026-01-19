@@ -32,6 +32,7 @@ Route::put('conversation/updateLeadsStatus', [ConversationController::class , 'u
 Route::put('conversation/updateLeadsRelationship', [ConversationController::class , 'updateLeadsRelationship']);
 Route::get('conversation/list', [ConversationController::class , 'index']);
 Route::get('conversation/fetchpsid/{psid}', [ConversationController::class , 'fetchCustomerPSID']);
+Route::get('conversation/summary', [ConversationController::class , 'leadsSummary']);
 Route::apiResource('conversation', ConversationController::class);
 
 Route::put('automationdashboard/updateConversation', [AutomationDashboardController::class , 'updateConversationLogs']);
